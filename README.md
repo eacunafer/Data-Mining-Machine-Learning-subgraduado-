@@ -6,3 +6,26 @@ Este material es usado por el Dr. Edgar Acuna en una clase subgraduada de Data M
 Data preprocessing
 
 Data Visualizacion
+
+Normalizacion y Duscretizacion
+
+Seleccion de Variables
+
+Componenentes  Principales
+
+Discriminante Lineal
+
+Naive Bayes
+
+K-nn
+
+Regresion Logistica
+
+Arboles de Decision
+
+Random Forests
+
+Neural Networks y Deep Learning
+
+Clustering
+
