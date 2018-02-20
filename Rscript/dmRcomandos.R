@@ -1,11 +1,9 @@
 #############################################################
 #          COMANDOS EN R PARA EL CURSO DE MINERIA DE DATOS  #
-#           Dr. Edgar Acuna, Julio del 2009                 #
+#           Dr. Edgar Acuna, Febrero del 2018               #
 #############################################################
-#Si se usa la libreria dprep descomentar la siguiente linea
-#Para instalar la libreria entre a R y escoja Paquetes y luego 
-# Instalar de archivos locales
-library(dprep)
+#Si se  usa la libreria dprep quitar el comentario de la siguiente linea
+#library(dprep)
 #Cargando el espacio de trabajo del curso
 #Entrar a R y elegir Archivos luego escoja Cargar area de Trabajo 
 #load("H:\\rdm.Rdata")
@@ -17,22 +15,31 @@ library(dprep)
 ######################################################
 ########  EXPLORANDO EL CONJUNTO DE DATOS ###########
 #Cargando el conjunto de datos census solo si se usa la libreria dprep
-data(censusn)
-#Figura para ver los valores perdidos
-imagmiss(censusn, name="census")
-#Para ver que columnas tienen valores perdidos
-which(colSums(is.na(censusn))!=0)
-#Para ver que filas tienen valores perdidos 
-rmiss=which(rowSums(is.na(censusn))!=0,arr.ind=T)
+#data(census)
+#leyendo los datos de la internet
+census=read.table("https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data", sep=',',na.strings=" ?")
+#Mostrando las primeras 15 filas del dataset
+head(census,15)
+#Mostrando las ultimas filas del dataset
+tail(census)
+#Contando el total de valores missing en el dataset
+sum(is.na(census)!=0)
+#Hallando que columnas tienen valores perdidos
+which(colSums(is.na(census))!=0)
+#Hallando las filas tienen valores perdidos 
+rmiss=which(rowSums(is.na(census))!=0,arr.ind=T)
 #Para ver el porcentaje de filas con valores perdidos
-length(rmiss)*100/dim(censusn)[1]
-#Para ver el porcentaje de valores perdidos en las columnas 
-colmiss=c(2,6,13)
-per.miss.col=100*colSums(is.na(censusn[,colmiss]))/dim(censusn)[1]
+length(rmiss)*100/dim(census)[1]
+#Para ver el porcentaje de missing  values en las columnas donde las hay 
+colmiss=c(2,7,14)
+per.miss.col=100*colSums(is.na(census[,colmiss]))/dim(census)[1]
 per.miss.col
 #Para eliminar las filas que contienen al menos un valor perdido
-census.omit=na.omit(censusn)
+census.omit=na.omit(census)
 dim(census.omit)
+#Figura para ver los valores perdidos
+library(dprep)
+imagmiss(census, name="census")
 
 #########  LIMPIANDO EL CONJUNTO DE DATOS DE VALORES FALTANTES #######################
 #Se elimina las columnas con por lo menos 50% de entradas faltantes y filas con 
