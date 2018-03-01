@@ -44,6 +44,7 @@ imagmiss(census, name="census")
 #########  LIMPIANDO EL CONJUNTO DE DATOS DE VALORES FALTANTES #######################
 #Se elimina las columnas con por lo menos 50% de entradas faltantes y filas con 
 #por lo meno el 30% de entradas faltantes
+data(hepatitis)
 hepatitis.cl=clean(hepatitis,tol.col=.5,tol.row=.3,name="cl.hepatitis")
 
 #########  IMPUTACION MEDIA/MEDIANA/MODA ############################################
@@ -52,16 +53,37 @@ census.mimp=ce.mimp(census,"mean",atr=c(2,7,14),nomatr=c(2,7,14))
 census.mdimp=ce.mimp(census,"median",atr=c(2,7,14),nomatr=c(2,7,14)) 
 #visualizando los datos despues de la imputacion
 imagmiss(census.mimp, name="Census after mean imputation")
-#Imputacion en el conjunto de datos hepatitis
+#Ejemplo2. Imputacion en el conjunto de datos hepatitis
 data(hepatitis)
 imagmiss(hepatitis, name="hepatitis")
 hepa.mean.imp=ce.mimp(hepatitis,"mean",1:19)
-
+#Imputacion en el dataset Titanic
+#Ejemplo3. Leyendo los datos de Titanic
+titanic=read.csv('http://academic.uprm.edu/eacuna/titanic.csv',header=T,sep=',',na.string='')
+head(titanic)
+#Eiminando las columnas PassengerId, Name y cabin(la cual tiene demasiados
+#missing values)
+titanic1=titanic[,c(2,4,5,6,7,8,9,11)]
+imagmiss(titanic1)
+#Nota: Debido a que los programas de imputacion son para datos supervisados
+#hay que agregar una columna de unos al final porque la ultima columna debe indicar la clase
+titanic1=cbind(titanic1,rep(1,1309))
+#nombrando la columna de clases
+colnames(titanic)[9]="class"
+titanic.mimp=ce.mimp(titanic1,"mean",atr=c(3,7,8),nomatr=8) 
+imagmiss(titanic.mimp)
+titanic.mdimp=ce.mimp(titanic1,"median",atr=c(3,7,8),nomatr=8) 
+imagmiss(titanic.mdimp)
 ########  IMPUTACION usando los k-vecinos mas cercanos ############
 #Imputando census con k=3 vecinos mas cercanos
-census.knn=ec.knnimp(censusn,k=3)
+census.knn=ec.knnimp(census,k=3)
 #imputando hepatitis con k=10 vecinos
 hepa.knn=ec.knnimp(hepatitis,k=10)
+imagmiss(hepa.knn)
+titanic.knnimp=ec.knnimp(titanic1,nomatr=8,k=3) 
+imagmiss(titanic.knnimp)
+titanic.knnimp=ce.impute(titanic1, method = "knn", c(3,7,8),nomatr = 8, k1 = 3)
+imagmiss(titanic.knnimp)
 
 ######## II- NORMALIZACION ##########################
 ###########################################################
